@@ -1302,10 +1302,14 @@ process mass_spec_raw_convert{
         file(raw_file) from ch_mass_spec_raw
     output:
         file("*") into ch_mass_spec_converted
-    script:
-        """
-        wine msconvert $raw_file --filter "peakPicking true 1-"
-        """
+    shell:
+        '''
+        tmpp=`readlink -f $PWD/!{raw_file}`
+        DIR=\$(dirname $tmpp)
+        echo $DIR
+        echo $PWD
+        /usr/bin/singularity exec -B $DIR:/data --writable /research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/Projects/jchen6/GATA1_TFBS_ABE8e_screening/pre-test_vali/RNA-seq/analysis/H2A_sg6991vsNT/rna_seq_variant_call_jchen6_2023-06-12/final_results/sandbox-li wine msconvert /data/!{raw_file} --filter "peakPicking true 1-" -o $PWD
+        '''
 }
 
 ch_uniprot_protein_fasta_uncompressed.into {
