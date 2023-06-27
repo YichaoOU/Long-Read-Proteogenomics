@@ -1299,7 +1299,7 @@ process mass_spec_raw_convert{
       params.mass_spec != false
 
     input:
-        file(raw_file) from ch_mass_spec_raw
+        path(raw_file) from ch_mass_spec_raw
     output:
         file("*") into ch_mass_spec_converted
     shell:
